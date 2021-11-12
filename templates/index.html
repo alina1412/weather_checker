@@ -1,88 +1,83 @@
 <!DOCTYPE html>
-
 <html lang="en">
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link href="/static/styles.css" rel="stylesheet">
-        <link href="/static/favicon.png" rel="icon">
-        <title>Weather</title>
-    </head>
+   <head>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+      <link href="/static/styles.css" rel="stylesheet">
+      <link href="/static/favicon.png" rel="icon">
+      <title>Weather</title>
+      
+      <script>
+        var make_cold = function() {
+            let choose = document.querySelector(".field");
+            choose.classList.add("cold");
+        }
+        var make_warm = function() {
+            let choose = document.querySelector(".field");
+            choose.classList.add("warm");
+        }
+      </script>
+   </head>
 
+   <body class="field">
+      <div class="topw">
+         <h1>Weather</h1>
+      </div>
 
+      <div>
+         <div class="section">
+            <h3>type a city to know the temperature:</h3>
+            <form method="post">
+               <input type="text" autocomplete="off" placeholder="name [city]" autofocus name="p-name">
+               <input type="submit" value="Check">
+            </form>
+         </div>
 
-
-    <body class="field">
-        <div class="topw">
-            <h1>Weather</h1>
-        </div>
-
-        <div>
-
-            <div class="section">
-                <h3>type a city to know the temperature:</h3>
-                <form method="post">
-                    <input type="text" autocomplete="off" placeholder="name [city]" autofocus name="p-name">
-                     <input type="submit" value="Check">
-                </form>
+         <div class="section">
+            {% if args["answer"] == 0 %}
+            <div class="alert alert-primary">
+               "{{ args["last"] }}" - not found...
             </div>
+            {% endif %}
 
+            {% if args["answer"] == 1 %}
+                <div>
+                </div>
 
-            <div class="section">
-                <!--<h2>Answer</h2>-->
-                <!--<p>{{ answer }}</p>-->
-                  {% if args["answer"] == 0 %}
-                      <div class="alert alert-primary">
-                      "{{ args["last"] }}" - not found...
-                      </div>
-                  {% endif %}
+                {% if ((args["indata"]|length > 0) and (args["indata"][0][2] < 1)) %}
+                <script>
+                    make_cold();
+                </script>
+                {% endif %}
 
-                  {% if args["answer"] == 1 %}
-                      <div>
+                {% if ((args["indata"]|length) > 0 and (args["indata"][0][2] > 1)) %}
+                <script>
+                    make_warm();
+                </script>
+                {% endif %}
+            {% endif %}
+         </div>
+         <table>
+            <thead>
+               <tr>
+                  <th>city</th>
+                  <th>weather</th>
+                  <th> </th>
+               </tr>
+            </thead>
+            <tbody>
+               <!-- (1, 'moscow', -1.2) -->
+               {% for opt in args["indata"] %}
+               <tr>
+                  <th>{{ opt[1] }} </th>
+                  <th>{{ opt[2] }}</th>
+                  <th>*C</th>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
 
-                      </div>
-                    {% if ((args["indata"]|length > 0) and (args["indata"][0][2] < 1)) %}
-                    <script>
-                        let choose = document.querySelector(".field");
-                        choose.classList.add("cold");
-                        // var d = document.getElementById("jum");
-                        // d.className += " green";
-                    </script>
-                    {% endif %}
-                    {% if ((args["indata"]|length) > 0 and (args["indata"][0][2] > 1)) %}
-                    <script>
-                        let choose = document.querySelector(".field");
-                        choose.classList.add("warm");
-                        // var d = document.getElementById("jum");
-                        // d.className += " green";
-                    </script>
-                    {% endif %}
-
-                  {% endif %}
-            </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>city</th>
-                            <th>weather</th>
-                            <th> </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- (1, 'moscow', -1.2) -->
-                        {% for opt in args["indata"] %}
-                        <tr>
-                            <th>{{ opt[1] }} </th>
-                            <th>{{ opt[2] }}</th>
-                            <th>*C</th>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-        </div>
-    </body>
-
-<!--<footer class="foot"></footer>-->
-
+   </body>
+   
 </html>
+

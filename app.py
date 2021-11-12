@@ -1,15 +1,10 @@
-from flask import Flask
-from flask import redirect, render_template, request 
-# from flask import url_for, flash, jsonify, session
+from flask import Flask, redirect, render_template, request 
+
 import db_check as check
 from db_editor import DatabaseEditor as D
 
 app = Flask(__name__) 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.secret_key = 'super secret key'
-
-def before_request():
-    app.jinja_env.cache = {}
 
 
 def get_answer(request):
@@ -27,23 +22,19 @@ def get_answer(request):
 def index():
     db = D()
     answer = True
-    app.before_request(before_request)
 
     if request.method == "POST":
-        answer  = check.cpost(request, db)
+        answer  = check.check_posted_request(request, db)
         path = f"/?found={answer}"
         return redirect(path)
 
     else:
         db.create_main_db()
         answer = get_answer(request)
+        # print("Last_input: ", check.Last_input)
+        # print("answer: ", answer)
 
-        print("Last_input: ", check.Last_input)
-        print("answer: ", answer)
-        # num_rows = list(db.get_count())[0][0]
-        # print("get_count: ", )
-
-        indata = list(db.select("SELECT * FROM weather ORDER BY n_id DESC")) # [::-1]
+        indata = list(db.select("SELECT * FROM weather ORDER BY n_id DESC"))  
         
         if len(indata) == 10: 
             db.delete(indata[-9][0])
@@ -53,8 +44,7 @@ def index():
         args = {"answer": answer, "last": check.Last_input, "indata": indata}
 
         return render_template("index.html", args=args)
-        # return render_template("index.html", answer=answer, last=check.Last_input, indata=indata)
-
+    
 
 
 

@@ -1,23 +1,21 @@
 from http.client import HTTPSConnection
-import json
+from json import loads
 
 Last_input = ""
 
 
 def getTemperature(city):
     c = HTTPSConnection("api.openweathermap.org")
-    # city = 'Moscow' # input()
     c.request('GET', f'/data/2.5/weather?q={city}&units=metric&appid=cb37668bb0f9f472913ecc40fcb08884')
     res = c.getresponse()
     data = res.read()
-    data = json.loads(data)
+    data = loads(data)
     # print(data)
     if data and "main" in data:
         return data["main"]["temp"]
     else:
-        # print("unfortunately, no such city found")
+        # print("not found")
         return None
-    # return None
 
 
 def isEnglish(s):
@@ -34,26 +32,26 @@ def isEnglish(s):
 def users_input(request):
     global Last_input
     city = request.form.get("p-name", type=str)
-    # Nizhny+Novgorod
     Last_input = city
     if isEnglish(city):
-        print("Eng")
+        # print("Eng")
         city = city.replace("-", " ")
         city = "+".join(city.split(" "))
+        # Nizhny+Novgorod
         return city
 
 
-def cpost(request, db):
+def check_posted_request(request, db):
     global Last_input
     city = users_input(request)
+    # print("city--", city)
     if not city:
         return False
 
     t_in_city = getTemperature(city)
     if t_in_city:
         weather = round(getTemperature(city), 1)
-         
         query = "INSERT INTO weather (city, weather) VALUES(?, ?)"
-        db.insert(query, (Last_input, weather))
+        db.run_query(query, (Last_input, weather))
         return True
     return False
