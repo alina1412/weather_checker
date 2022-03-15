@@ -24,6 +24,16 @@ class DatabaseEditor:
         except sqlite3.Error as error:
             print(error)
 
+    def create_table(self, query):
+        with self.connect:
+            cursor = self.connect.cursor()
+            cursor.execute(query)
+            self.connect.commit()
+            
+    def create_main_db(self):
+        query_create = self.main_creating_query
+        self.create_table(query_create)
+
     def run_query(self, query, new_data=None):
         with self.connect:
             if new_data:
@@ -32,22 +42,15 @@ class DatabaseEditor:
             else:
                 self.connect.execute(query)
                 self.connect.commit()
+                
+    def delete(self, n):
+        q = 'DELETE FROM weather WHERE n_id < (?);'
+        self.run_query(q, (n,))
 
     def select(self, query):
         with self.connect:
             selected = self.connect.execute(query)
             return selected  
-
-    def create_table(self, query):
-        with self.connect:
-            cursor = self.connect.cursor()
-            cursor.execute(query)
-            self.connect.commit()
-            
-
-    def create_main_db(self):
-        query_create = self.main_creating_query
-        self.create_table(query_create)
 
     def drop(self):
         table_name = self.d_name
@@ -58,6 +61,3 @@ class DatabaseEditor:
         q =  'SELECT COUNT(*) FROM weather'
         return self.select(q)
 
-    def delete(self, n):
-        q = 'DELETE FROM weather WHERE n_id < (?);'
-        self.run_query(q, (n,))
