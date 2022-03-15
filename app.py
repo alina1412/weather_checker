@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, request 
 
-import db_check as check
+import request_check as check
 from db_editor import DatabaseEditor as D
 
 app = Flask(__name__) 
