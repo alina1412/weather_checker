@@ -6,7 +6,8 @@ Last_input = ""
 
 def getTemperature(city):
     c = HTTPSConnection("api.openweathermap.org")
-    c.request('GET', f'/data/2.5/weather?q={city}&units=metric&appid=cb37668bb0f9f472913ecc40fcb08884')
+    appid = "appid=cb37668bb0f9f472913ecc40fcb08884"
+    c.request('GET', f'/data/2.5/weather?q={city}&units=metric&' + appid)
     res = c.getresponse()
     data = res.read()
     data = loads(data)

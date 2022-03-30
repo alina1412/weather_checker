@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class DatabaseEditor:
     def __init__(self):
         self.d_name = "last_weather.db"
@@ -29,7 +30,7 @@ class DatabaseEditor:
             cursor = self.connect.cursor()
             cursor.execute(query)
             self.connect.commit()
-            
+
     def create_main_db(self):
         query_create = self.main_creating_query
         self.create_table(query_create)
@@ -42,7 +43,7 @@ class DatabaseEditor:
             else:
                 self.connect.execute(query)
                 self.connect.commit()
-                
+
     def delete(self, n):
         q = 'DELETE FROM weather WHERE n_id < (?);'
         self.run_query(q, (n,))
@@ -50,7 +51,7 @@ class DatabaseEditor:
     def select(self, query):
         with self.connect:
             selected = self.connect.execute(query)
-            return selected  
+            return selected
 
     def drop(self):
         table_name = self.d_name
@@ -58,6 +59,5 @@ class DatabaseEditor:
         self.query(query)
 
     def get_count(self):
-        q =  'SELECT COUNT(*) FROM weather'
+        q = 'SELECT COUNT(*) FROM weather'
         return self.select(q)
-
