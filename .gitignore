@@ -1,5 +1,9 @@
 *.db
 __pycache__/
+<<<<<<< HEAD
 **/.vscode/
 .env
 
+=======
+.vscode
+>>>>>>> 05d6ca5f5d0deae181c2cdde48b68a99b4ece003

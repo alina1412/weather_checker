@@ -1,6 +1,10 @@
 from flask import Flask, redirect, render_template, request
+<<<<<<< HEAD
 
 from request_check import RequestCheck
+=======
+import request_check as check
+>>>>>>> 05d6ca5f5d0deae181c2cdde48b68a99b4ece003
 from db_editor import DatabaseEditor as D
 
 app = Flask(__name__)
@@ -41,8 +45,13 @@ def index():
         if len(indata) == 10:
             db.delete(indata[-9][0])
 
+<<<<<<< HEAD
         # print("indata[0] - ", indata) # indata[0]['weather']
         # {'n_id': 29, 'city': 'moscow', 'weather': 0.3}
+=======
+        # print("indata[0] - ", indata)
+        # indata[0]['weather'] {'n_id': 29, 'city': 'moscow', 'weather': 0.3}
+>>>>>>> 05d6ca5f5d0deae181c2cdde48b68a99b4ece003
         # indata[0] -  (1, 'moscow', -1.2)
         args = {"answer": answer, "last": check.Last_input, "indata": indata}
 
