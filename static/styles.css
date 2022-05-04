@@ -24,14 +24,14 @@ body {
 }
 
 .cold {
-    background-image: url(cold1.jpg);
+    background-image: url(/static/cold1.jpg);
     background-position: top center;
     background-attachment: fixed;
     min-height: 100vh;
 }
 
 .warm {
-    background-image: url(warm1.jpg);
+    background-image: url(/static/warm1.jpg);
     background-position: top center;
     background-attachment: fixed;
     min-height: 100vh; /*650px;*/
@@ -39,7 +39,7 @@ body {
 
 
 .topw {
-    background-color: gray;
+    background-color: rgba(82, 80, 198, 0.797);
     color: #fff;
     padding-top: 0.5rem;
     text-align: center;
