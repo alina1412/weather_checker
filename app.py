@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request
 from request_check import RequestCheck
 from db_editor import DatabaseEditor as D
 
-app = Flask(__name__)
+app = Flask(__name__)           # RUN IN DEBUG!!
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
