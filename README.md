@@ -4,7 +4,7 @@
 
 ## Description:
 
-The project is a flask web application which allows a user to check the current weather in the chosen  city.
+The project is a simple `flask web application` which allows a user to check the current weather in the chosen  city.
 
 The app sends an http-request to the site “[api.openweathermap.org]()” to get the information of the temperature.
 
@@ -14,13 +14,18 @@ The app sends an http-request to the site “[api.openweathermap.org]()” to ge
 
 (made for educational purposes)
 
+
+The main web-page has:
+
+- a form to ask a user for the name of the city 
+- the table from sqlite database with last requests from the user
+- the background image (changing depending on the weather)
+
 #### Files:
 
-**1. app.py.**
+**1. views.py.**
 
-It’s the main file, it runs the app, renders a web page, with a form to ask a user for the name of the city and with the table from sqlite database with last requests from the user.
-
-That file checks if there were used methods `Get` or `Post`.
+The view of the main page checks if there were used methods `Get` or `Post`.
 
 The Method “post” calls the function 'check_posted_request' to get new information about the weather. The method "get" checks if there was a new successful request from a user, selects rows of last requests from the database, renders the index.html template with new data as parameters "args".
 
@@ -46,10 +51,10 @@ Database which contains last requests from a user and weather in that city.
 
 Contains form to get input from a user, table with last checks of the weather.
 
-Jinja2 statements checks the condition if the last request was successful, and changes the template to several cases: “cold” weather’s picture, “warm” weather’s picture, gray background in case the request hasn't been found.
+`Jinja2` statements checks the condition if the last request was successful, and changes the template to several cases: “cold” weather’s picture, “warm” weather’s picture, gray background in case the request hasn't been found.
 
 **6. static:**
 
--pictures.
+-pictures
 
 -styles.css

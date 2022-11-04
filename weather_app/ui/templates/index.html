@@ -43,13 +43,13 @@
                 <div>
                 </div>
 
-                {% if ((args["indata"]|length > 0) and (args["indata"][0][2] < 1)) %}
+                {% if ((args["indata"]|length > 0) and (args["indata"][0][1] < 1)) %}
                 <script>
                     make_cold();
                 </script>
                 {% endif %}
 
-                {% if ((args["indata"]|length) > 0 and (args["indata"][0][2] > 1)) %}
+                {% if ((args["indata"]|length) > 0 and (args["indata"][0][1] > 1)) %}
                 <script>
                     make_warm();
                 </script>
@@ -65,11 +65,11 @@
                </tr>
             </thead>
             <tbody>
-               <!-- (1, 'moscow', -1.2) -->
+            
                {% for opt in args["indata"] %}
                <tr>
-                  <th>{{ opt[1] }} </th>
-                  <th>{{ opt[2] }}</th>
+                  <th>{{ opt[0] }} </th>
+                  <th>{{ opt[1] }}</th>
                   <th>*C</th>
                </tr>
                {% endfor %}
