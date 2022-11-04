@@ -10,6 +10,14 @@ The app sends an http-request to the site “[api.openweathermap.org]()” to ge
 
 ![](image/README/1651653010717.png)
 
+## How to run locally
+
+- get API key from https://openweathermap.org/ and put it to .env
+- python -m venv .venv
+- activate virtual environment
+- pip install -r requirenments.txt
+- flask run
+
 ## Structure of the project
 
 (made for educational purposes)
