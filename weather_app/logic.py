@@ -20,14 +20,14 @@ class InputDecoder:
     def load_user_input(self):
         """turns name of the city
         'Nizhny Novgorod' -> 'Nizhny+Novgorod'
-        'yoshkar-ola -> 'yoshkar+ola '"""
+        'yoshkar-ola -> 'yoshkar+ola'"""
         city = self.request.form.get("p-name", type=str)
         self.last_input = city
         if self.is_english(city):
-            city = city.replace("-", " ")
-            city = "+".join(city.split(" "))
-            return city
-        return ""
+            changed_city = city.replace("-", " ").strip()
+            changed_city = "+".join(city.split(" "))
+            return (city, changed_city)
+        return ("", "")
 
 
 def save_city_request(db, city, temperature) -> None:
@@ -38,24 +38,13 @@ def save_city_request(db, city, temperature) -> None:
 
 def processed_request(request, db) -> tuple[str, bool]:
     input_decoder = InputDecoder(request)
+    city, changed_city = input_decoder.load_user_input()
     last_input = input_decoder.last_input
-    city = input_decoder.load_user_input()
     if not city:
         return (last_input, False)
-    temperature = WeatherFromApi().get_temperature(city)
+    temperature = WeatherFromApi().get_temperature(changed_city)
     if temperature is None:
         return (last_input, False)
     temperature = round(temperature, 1)
     save_city_request(db, city, temperature)
     return (last_input, True)
-
-
-def parse_args(request):
-    get_found_s = request.args.get("found", type=str)
-    if not get_found_s:
-        answer = 1
-    elif get_found_s.startswith("False"):
-        answer = 0
-    else:
-        answer = 1
-    return answer

@@ -6,19 +6,9 @@
       <link href="/static/favicon.png" rel="icon">
       <title>Weather</title>
       
-      <script>
-        var make_cold = function() {
-            let choose = document.querySelector(".field");
-            choose.classList.add("cold");
-        }
-        var make_warm = function() {
-            let choose = document.querySelector(".field");
-            choose.classList.add("warm");
-        }
-      </script>
    </head>
 
-   <body class="field">
+   <body class="field {{ 'cold' if context['is_cold'] else 'warm' }}">
       <div class="topw">
          <h1>Weather</h1>
       </div>
@@ -38,23 +28,6 @@
                "{{ context["last"] }}" - not found...
             </div>
             {% endif %}
-
-            {% if context["answer"] == 1 %}
-                <div>
-                </div>
-
-                {% if ((context["indata"]|length > 0) and (context["indata"][0][1] < 1)) %}
-                <script>
-                    make_cold();
-                </script>
-                {% endif %}
-
-                {% if ((context["indata"]|length) > 0 and (context["indata"][0][1] > 1)) %}
-                <script>
-                    make_warm();
-                </script>
-                {% endif %}
-            {% endif %}
          </div>
          <table>
             <thead>
@@ -70,7 +43,7 @@
                <tr>
                   <th>{{ opt[0] }} </th>
                   <th>{{ opt[1] }}</th>
-                  <th>*C</th>
+                  <th>°C</th>
                </tr>
                {% endfor %}
             </tbody>
