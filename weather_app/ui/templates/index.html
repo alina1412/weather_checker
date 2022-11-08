@@ -6,19 +6,9 @@
       <link href="/static/favicon.png" rel="icon">
       <title>Weather</title>
       
-      <script>
-        var make_cold = function() {
-            let choose = document.querySelector(".field");
-            choose.classList.add("cold");
-        }
-        var make_warm = function() {
-            let choose = document.querySelector(".field");
-            choose.classList.add("warm");
-        }
-      </script>
    </head>
 
-   <body class="field">
+   <body class="field {{ 'cold' if context['is_cold'] else 'warm' }}">
       <div class="topw">
          <h1>Weather</h1>
       </div>
@@ -33,27 +23,10 @@
          </div>
 
          <div class="section">
-            {% if args["answer"] == 0 %}
+            {% if context["answer"] == 0 %}
             <div class="alert alert-primary">
-               "{{ args["last"] }}" - not found...
+               "{{ context["last"] }}" - not found...
             </div>
-            {% endif %}
-
-            {% if args["answer"] == 1 %}
-                <div>
-                </div>
-
-                {% if ((args["indata"]|length > 0) and (args["indata"][0][2] < 1)) %}
-                <script>
-                    make_cold();
-                </script>
-                {% endif %}
-
-                {% if ((args["indata"]|length) > 0 and (args["indata"][0][2] > 1)) %}
-                <script>
-                    make_warm();
-                </script>
-                {% endif %}
             {% endif %}
          </div>
          <table>
@@ -65,12 +38,12 @@
                </tr>
             </thead>
             <tbody>
-               <!-- (1, 'moscow', -1.2) -->
-               {% for opt in args["indata"] %}
+            
+               {% for opt in context["indata"] %}
                <tr>
-                  <th>{{ opt[1] }} </th>
-                  <th>{{ opt[2] }}</th>
-                  <th>*C</th>
+                  <th>{{ opt[0] }} </th>
+                  <th>{{ opt[1] }}</th>
+                  <th>°C</th>
                </tr>
                {% endfor %}
             </tbody>
