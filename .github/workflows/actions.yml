@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt
         echo weather_api_key=${{ env.weather_api_key }} >> $GITHUB_ENV
         echo app_key=${{ env.app_key }} >> $GITHUB_ENV
-        pip install -e .
+      
     - name: Test with pytest
       id: test
       working-directory: ./
