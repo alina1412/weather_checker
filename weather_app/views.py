@@ -6,11 +6,12 @@ import os
 from flask import redirect, render_template, request, session
 
 from weather_app import app
+from weather_app.config.config import Settings
 from weather_app.db_editor import DatabaseEditor
 from weather_app.logic import processed_request
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["SECRET_KEY"] = os.environ.get("app_key")
+app.config["SECRET_KEY"] = Settings().app_key
 
 
 @app.route("/", methods=["GET", "POST"])
