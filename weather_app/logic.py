@@ -17,15 +17,19 @@ class InputDecoder:
             phrase = phrase.replace("-", "")
             return phrase.isalpha()
 
+    def load(self):
+        return self.request.form.get("p-name", type=str)
+
     def load_user_input(self):
         """turns name of the city
         'Nizhny Novgorod' -> 'Nizhny+Novgorod'
         'yoshkar-ola -> 'yoshkar+ola'"""
-        city = self.request.form.get("p-name", type=str)
+        city = self.load()
         self.last_input = city
         if self.is_english(city):
-            changed_city = city.replace("-", " ").strip()
-            changed_city = "+".join(city.split(" "))
+            changed_city = city.strip()
+            changed_city = changed_city.replace("-", " ")
+            changed_city = "+".join(changed_city.split(" "))
             return (city, changed_city)
         return ("", "")
 
