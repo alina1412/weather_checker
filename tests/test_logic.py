@@ -23,7 +23,7 @@ def test_processed_request_function(input_query, found):
     db = DatabaseEditor()
     city = input_query
 
-    assert Settings().openweather_api_key != None
+    assert Settings().openweather_api_key is not None
 
     with mock.patch("weather_app.logic.InputDecoder.load", return_value=city):
         last_input, isfound = processed_request(input_query, db)

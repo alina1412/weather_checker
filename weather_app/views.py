@@ -1,14 +1,13 @@
 """
 application is one-paged
 """
-import os
-
 from flask import redirect, render_template, request, session
 
 from weather_app import app
 from weather_app.config.config import Settings
 from weather_app.db_editor import DatabaseEditor
-from weather_app.logic import processed_request
+from weather_app.logic import get_last_n_requests, processed_request
+
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SECRET_KEY"] = Settings().app_key
@@ -17,27 +16,20 @@ app.config["SECRET_KEY"] = Settings().app_key
 @app.route("/", methods=["GET", "POST"])
 def index():
     db = DatabaseEditor()
-    isfound = True
 
     if request.method == "POST":
-        last_input, isfound = processed_request(request, db)
-        session["last_input"] = last_input
-        path = f"/?found={isfound}"
-        return redirect(path)
+        session["last_input"], isfound = processed_request(request, db)
+        return redirect(f"/?found={isfound}")
     else:
-        db.create_main_db()
-        isfound = request.args.get("found") != "False"
-
-        indata = list(db.select("SELECT city, weather FROM weather ORDER BY n_id DESC"))
-        if len(indata) == 10:
-            db.delete(indata[-9][0])
-        is_cold = len(indata) > 0 and indata[0][1] < 1
-        last_input = session.get("last_input", "")
+        isfound: bool = request.args.get("found") != "False"
+        last_requests: list = get_last_n_requests(db)
+        is_cold: bool = len(last_requests) > 0 and last_requests[0][1] < 1
+        last_input: str = session.get("last_input", "")
 
         context = {
             "answer": isfound,
             "last": last_input,
-            "indata": indata,
+            "indata": last_requests,
             "is_cold": is_cold,
         }
         return render_template("index.html", context=context)
