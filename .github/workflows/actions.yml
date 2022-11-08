@@ -1,0 +1,33 @@
+name: Python Unit Test
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  weather_api_key: ${{ secrets.weather_api_key }}
+  app_key: ${{ secrets.app_key }}
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        echo weather_api_key=${{ env.weather_api_key }} >> $GITHUB_ENV
+        echo app_key=${{ env.app_key }} >> $GITHUB_ENV
+        pip install -e .
+    - name: Test with pytest
+      id: test
+      working-directory: ./
+      run: |
+        pytest tests -vv
+      continue-on-error: true
