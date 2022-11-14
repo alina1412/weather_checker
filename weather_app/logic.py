@@ -24,13 +24,11 @@ class InputDecoder:
 
     def load_user_input(self) -> tuple[str, str]:
         """turns name of the city
-        'Nizhny Novgorod' -> 'Nizhny+Novgorod'
-        'yoshkar-ola -> 'yoshkar+ola'"""
+        'Nizhny Novgorod' -> 'Nizhny+Novgorod'"""
         city = self.load()
         self.last_input = city
         if self.is_english(city):
             changed_city = city.strip()
-            changed_city = changed_city.replace("-", " ")
             while "  " in changed_city:
                 changed_city = changed_city.replace("  ", " ")
             changed_city = "+".join(changed_city.split(" "))
