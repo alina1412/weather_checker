@@ -36,7 +36,11 @@ def test_processed_request_function(input_query, found):
     [
         ("moscow", "moscow"),
         ("Nizhny Novgorod", "Nizhny+Novgorod"),
-        ("yoshkar-ola ", "yoshkar+ola"),
+        ("Nizhny    Novgorod ", "Nizhny+Novgorod"),
+        ("yoshkar-ola ", "yoshkar-ola"),
+        ("yovwviurvwiuvfnwJVBNKAEJBBVKJBAEBKJR kjbjkjbfveevwvwevwvwwvw ", ""),
+        ("dv4344242", ""),
+        ("moscow/", ""),
     ],
 )
 def test_parsing(input_query, city_after):
@@ -44,4 +48,4 @@ def test_parsing(input_query, city_after):
     with mock.patch("weather_app.logic.InputDecoder.load", return_value=input_query):
         city, changed_city = input_decoder.load_user_input()
         assert input_query == city
-        assert city_after == changed_city
+        assert changed_city == city_after
