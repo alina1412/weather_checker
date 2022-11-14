@@ -31,6 +31,8 @@ class InputDecoder:
         if self.is_english(city):
             changed_city = city.strip()
             changed_city = changed_city.replace("-", " ")
+            while "  " in changed_city:
+                changed_city = changed_city.replace("  ", " ")
             changed_city = "+".join(changed_city.split(" "))
             return (city, changed_city)
         return ("", "")
