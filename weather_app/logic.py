@@ -14,10 +14,10 @@ class InputDecoder:
             phrase.encode(encoding="utf-8").decode("ascii")
         except UnicodeDecodeError:
             return False
-        else:
-            phrase = phrase.replace(" ", "")
-            phrase = phrase.replace("-", "")
-            return phrase.isalpha()
+        phrase = phrase.replace(" ", "")
+        phrase = phrase.replace("-", "")
+        english = phrase.isalpha()
+        return english
 
     def load(self) -> str:
         return self.request.form.get("p-name", type=str)
@@ -31,6 +31,10 @@ class InputDecoder:
             changed_city = city.strip()
             while "  " in changed_city:
                 changed_city = changed_city.replace("  ", " ")
+                
+            if len(changed_city) > 30:
+                return ("", "")
+
             changed_city = "+".join(changed_city.split(" "))
             return (city, changed_city)
         return ("", "")
